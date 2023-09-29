@@ -1,0 +1,22 @@
+div.home-slogan {  
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    h1.home-title {
+        font-size: 8rem;
+        text-transform: uppercase;
+        color: black;
+        letter-spacing: -4px;
+    }
+    span.home-span {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-size: 2rem;
+        margin-top: 2rem;
+        color: rgb(255, 87, 20);
+        letter-spacing: -0.5px;
+    }
+}

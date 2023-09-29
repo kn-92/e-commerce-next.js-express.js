@@ -1,0 +1,75 @@
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 100%;
+    min-height: 10rem;
+    background-color: black;
+    padding: 2rem 2rem;
+    div.header-left {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        div.logo-container {
+            img.header-logo {
+                width: 9rem;
+                height: 100%;
+            }
+        }
+        nav.nav-menu {
+            width: 28rem;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-left: 4rem;
+            align-items: center;
+            a.header-link {
+                font-size: 1.6rem;
+                color: var(--nav-link-color);
+                text-decoration: none;
+                display: block;
+                font-weight: 600;
+            }
+        }
+    }
+    div.header-right {
+        display: flex;
+        flex-direction: row;
+        justify-content:  flex-end;
+        align-items: center;
+        width: 45rem;
+        font-size: 1.6rem;
+        div.search-box {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+           
+        }
+        div.user-menu {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            width: 20rem;
+            div.login-register {
+                color: white;
+                font-weight: 600;
+            }
+            div.favorites {
+                margin-left: 3rem;
+                width: 3rem;
+            }
+            div.cart {
+                margin-left: 1rem;
+                padding-top: 0.3rem;
+                width: 3rem;
+
+            }
+        }
+    }
+    
+}
