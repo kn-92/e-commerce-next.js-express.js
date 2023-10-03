@@ -19,9 +19,10 @@ const user_1 = require("../../models/user/user");
 const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
-        return res
-            .status(422)
-            .json({ message: "Validation failed", errors: errors.array() });
+        const error = new Error("Validation failed");
+        error.statusCode = 422;
+        error.errorsArray = errors.array();
+        return next(error);
     }
     const { email, password } = req.body;
     const hashedPassword = yield bcrypt_1.default.hash(password, 12);
@@ -43,7 +44,10 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
-        console.log(error);
+        if (!error.statusCode) {
+            error.statusCode = 500;
+            next(error);
+        }
     }
 });
 exports.signup = signup;

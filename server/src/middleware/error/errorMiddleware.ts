@@ -6,9 +6,8 @@ export const errorMiddlewareController = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(error, error.errorArray);
+  console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
-  const errors = error.errorArray;
-  res.status(status).json({ message: message, errors: errors });
+  res.status(status).json({ error: error, message: message });
 };

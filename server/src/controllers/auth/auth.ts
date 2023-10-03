@@ -5,12 +5,15 @@ import { validationResult } from "express-validator";
 
 import { User } from "../../models/user/user";
 
+import { MiddlewareError } from "../../types";
+
 export const signup: RequestHandler = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res
-      .status(422)
-      .json({ message: "Validation failed", errors: errors.array() });
+    const error: MiddlewareError = new Error("Validation failed");
+    error.statusCode = 422;
+    error.errorsArray = errors.array();
+    return next(error);
   }
   const { email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 12);
@@ -31,7 +34,10 @@ export const signup: RequestHandler = async (req, res, next) => {
         .status(201)
         .json({ message: "User signed up succesfully.", data: data });
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+      next(error);
+    }
   }
 };

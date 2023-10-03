@@ -15,6 +15,10 @@ const URI = process.env.DATABASE_STRING;
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
+app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    next();
+});
 app.use("/auth", auth_1.default);
 app.use((req, res, next) => {
     res.status(404).send("<h1>Page not found</h1>");
