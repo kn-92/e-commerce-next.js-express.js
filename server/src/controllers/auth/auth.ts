@@ -1,10 +1,17 @@
 import { RequestHandler } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { validationResult } from "express-validator";
 
 import { User } from "../../models/user/user";
 
 export const signup: RequestHandler = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(422)
+      .json({ message: "Validation failed", errors: errors.array() });
+  }
   const { email, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 12);
   const user = new User({

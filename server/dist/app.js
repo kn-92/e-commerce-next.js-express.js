@@ -24,7 +24,7 @@ app.use(errorMiddleware_1.errorMiddlewareController);
 mongoose_1.default
     .connect(URI)
     .then(() => {
-    app.listen(PORT || 7500, () => {
+    app.listen(PORT || 5000, () => {
         console.log(`Database connected! Server is running on PORT: ${PORT} `);
     });
 })

@@ -14,8 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signup = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const express_validator_1 = require("express-validator");
 const user_1 = require("../../models/user/user");
 const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = (0, express_validator_1.validationResult)(req);
+    if (!errors.isEmpty()) {
+        return res
+            .status(422)
+            .json({ message: "Validation failed", errors: errors.array() });
+    }
     const { email, password } = req.body;
     const hashedPassword = yield bcrypt_1.default.hash(password, 12);
     const user = new user_1.User({
