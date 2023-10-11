@@ -16,7 +16,12 @@ export const signup: RequestHandler = async (req, res, next) => {
     return next(error);
   }
   const { email, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 12);
+  const hashedPassword = await bcrypt.hash(password, 12).catch((error) => {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error);
+  });
   const user = new User({
     email: email,
     password: hashedPassword,
@@ -32,7 +37,7 @@ export const signup: RequestHandler = async (req, res, next) => {
     user.save().then((data) => {
       res
         .status(201)
-        .json({ message: "User signed up succesfully.", data: data });
+        .json({ message: "User signed up succesfully.", user_id: data._id });
     });
   } catch (error: any) {
     if (!error.statusCode) {

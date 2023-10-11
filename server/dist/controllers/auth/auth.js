@@ -25,7 +25,12 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         return next(error);
     }
     const { email, password } = req.body;
-    const hashedPassword = yield bcrypt_1.default.hash(password, 12);
+    const hashedPassword = yield bcrypt_1.default.hash(password, 12).catch((error) => {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    });
     const user = new user_1.User({
         email: email,
         password: hashedPassword,
@@ -40,7 +45,7 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         user.save().then((data) => {
             res
                 .status(201)
-                .json({ message: "User signed up succesfully.", data: data });
+                .json({ message: "User signed up succesfully.", user_id: data._id });
         });
     }
     catch (error) {

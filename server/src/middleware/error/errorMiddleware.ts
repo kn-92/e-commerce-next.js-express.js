@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from "express";
+import type { ErrorRequestHandler } from "express";
 
-export const errorMiddlewareController = (
-  error: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
+export const errorMiddlewareController: ErrorRequestHandler = (
+  error,
+  req,
+  res,
+  next
 ) => {
   console.log(error);
   const status = error.statusCode || 500;
