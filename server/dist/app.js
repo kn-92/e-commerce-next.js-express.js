@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 });
 app.use("/auth", auth_1.default);
 app.use((req, res, next) => {
-    res.status(404).send("<h1>Page not found</h1>");
+    res.status(404).json({ message: "Endpoint doesn't exist!" });
     next();
 });
 app.use(errorMiddleware_1.errorMiddlewareController);

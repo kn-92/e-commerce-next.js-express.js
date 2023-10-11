@@ -46,3 +46,46 @@ export const signup: RequestHandler = async (req, res, next) => {
     }
   }
 };
+
+export const login: RequestHandler = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const error: MiddlewareError = new Error("Validation failed");
+    error.statusCode = 422;
+    error.errorsArray = errors.array();
+    return next(error);
+  }
+  const { email, password } = req.body;
+  try {
+  } catch (error) {}
+
+  const exsistingUser = await User.findOne({ email: email }).catch((error) => {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+      next(error);
+    }
+  });
+  if (!exsistingUser) {
+    const error: MiddlewareError = new Error(
+      "User with provided email doesn't exsist."
+    );
+    error.statusCode = 404;
+    return next(error);
+  }
+  const isPasswordEqual = await bcrypt
+    .compare(password, exsistingUser.password)
+    .catch((error) => {
+      if (!error.statusCode) {
+        error.statusCode = 500;
+        next(error);
+      }
+    });
+  if (!isPasswordEqual) {
+    const error: MiddlewareError = new Error(
+      "Provided password doesn't match."
+    );
+    error.statusCode = 401;
+    return next(error);
+  }
+  res.status(200).json({ message: "Logged in sucesfully!." });
+};

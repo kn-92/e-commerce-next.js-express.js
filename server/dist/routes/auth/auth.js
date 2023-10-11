@@ -5,5 +5,6 @@ const auth_1 = require("../../controllers/auth/auth");
 const auth_2 = require("../../middleware/validation/auth");
 const router = (0, express_1.Router)();
 //POST auth/signup
-router.post("/signup", (0, auth_2.userSignupValidation)(), auth_1.signup);
+router.post("/signup", (0, auth_2.userSignupOrLoginValidation)(), auth_1.signup);
+router.post("/login", (0, auth_2.userSignupOrLoginValidation)(), auth_1.login);
 exports.default = router;

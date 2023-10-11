@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userSignupValidation = void 0;
+exports.userSignupOrLoginValidation = void 0;
 const express_validator_1 = require("express-validator");
-const userSignupValidation = () => {
+const userSignupOrLoginValidation = () => {
     return [
         (0, express_validator_1.body)("email")
             .trim()
@@ -15,4 +15,4 @@ const userSignupValidation = () => {
             .withMessage("Password must be 5 characters long."),
     ];
 };
-exports.userSignupValidation = userSignupValidation;
+exports.userSignupOrLoginValidation = userSignupOrLoginValidation;
