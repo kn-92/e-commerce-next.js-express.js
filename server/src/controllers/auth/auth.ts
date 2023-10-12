@@ -56,8 +56,6 @@ export const login: RequestHandler = async (req, res, next) => {
     return next(error);
   }
   const { email, password } = req.body;
-  try {
-  } catch (error) {}
 
   const exsistingUser = await User.findOne({ email: email }).catch((error) => {
     if (!error.statusCode) {
@@ -87,5 +85,19 @@ export const login: RequestHandler = async (req, res, next) => {
     error.statusCode = 401;
     return next(error);
   }
-  res.status(200).json({ message: "Logged in sucesfully!." });
+  const secret = process.env.SECRET as string;
+  const token = jwt.sign(
+    {
+      email: exsistingUser.email,
+      userId: exsistingUser._id.toString(),
+    },
+    secret,
+    { expiresIn: "1h" }
+  );
+
+  res.status(200).json({
+    message: "Logged in succesfully!.",
+    token,
+    userId: exsistingUser._id.toString(),
+  });
 };

@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = exports.signup = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const express_validator_1 = require("express-validator");
 const user_1 = require("../../models/user/user");
 const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -65,9 +66,6 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
         return next(error);
     }
     const { email, password } = req.body;
-    try {
-    }
-    catch (error) { }
     const exsistingUser = yield user_1.User.findOne({ email: email }).catch((error) => {
         if (!error.statusCode) {
             error.statusCode = 500;
@@ -92,6 +90,15 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
         error.statusCode = 401;
         return next(error);
     }
-    res.status(200).json({ message: "Logged in sucesfully!." });
+    const secret = process.env.SECRET;
+    const token = jsonwebtoken_1.default.sign({
+        email: exsistingUser.email,
+        userId: exsistingUser._id.toString(),
+    }, secret, { expiresIn: "1h" });
+    res.status(200).json({
+        message: "Logged in succesfully!.",
+        token,
+        userId: exsistingUser._id.toString(),
+    });
 });
 exports.login = login;
